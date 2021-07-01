@@ -1,0 +1,206 @@
+#include<iostream>
+#include<fstream>
+#include<string.h>
+#include<conio.h>
+#include<cstdlib>
+#include<cstring>
+using namespace std;
+
+// intro
+
+void intro()
+{
+	cout<<"\n\n\t\t\t\t\t\tWe are Team Alpha";
+	cout<<"\n\n\t\t\t\t\t      This is our OOP Project"<<"\n\n\n\n\n\n\nPress any Key to Continue";
+	getch();
+    system("cls");
+	cout<<"\n\n\t\t\t\t\t\t\tCredits";
+	cout<<"\n\n\t\t\t\t\t\t     Ahmad Nosha (162)";
+    cout<<"\n\t\t\t\t\t\t     Shahzeb Ali (416)";
+    cout<<"\n\t\t\t\t\t\t     Abu bakar (155)";
+    cout<<"\n\t\t\t\t\t\t     Asad Maqsood (132)";
+    cout<<"\n\t\t\t\t\t\t     Anas Ashfaq (477)";
+    cout<<"\n\n\n\n\n\n\nPress any Key to Continue";
+	getch();
+
+}
+
+
+
+class book
+{
+		public:
+	     char book[5];
+        int id;
+        char auth[5];
+        int page;
+        char publi[5] ;
+        int cop;
+        
+ void addNew(void){ //adding records
+            system("cls");
+            cout<<"\n----------------------------------------";
+               cout<<"\n Enter book name ";
+            cin>>book;
+            cout<<"\n----------------------------------------";
+            cout<<"\n Enter book id ";
+            cin>>id;
+            cout<<"\n----------------------------------------";
+            cout<<"\n Enter author name: ";
+            cin>>auth;
+            cout<<"\n----------------------------------------";
+            cout<<"\n Enter number of pages: ";
+            cin>>page;
+            cout<<"\n----------------------------------------";
+            cout<<"\n Enter publisher name: ";
+            cin>> publi;
+            cout<<"\n----------------------------------------";
+            cout<<"\n Enter number of copies: ";
+            cin>>cop;
+            cout<<"\n----------------------------------------";
+
+          
+        }
+        void list(){ //To list total employees with Name, number and type
+		      
+              cout<<book<<" "<<id<<" "<<auth<<""""""""<<page<<""<<publi<<""""<<cop<<endl;
+        }
+        void modify_user()
+        {
+        	cout<<"ENTER BOOK NAME "<<endl;
+        	cin>>book;
+        	cout<<"BOOK ID"<<endl;
+        	cin>>id;
+        	cout<<"AUTHER NAME"<<endl;
+        	cin>>auth;
+        	cout<<"PAGES"<<endl;
+        	cin>>page;
+        	cout<<"PUBLICATION";
+        	cin>>publi;
+        	cout<<"COPIRES"<<endl;
+        	cin>>cop;
+        	
+		}
+			int alpha()
+		{
+			return id;
+		}
+
+
+	
+};
+
+int main()
+{
+
+    system("CLS");
+    intro();
+	int a,b,d,f ,g,n,t;
+	do
+	{
+	
+	
+    system("CLS");
+	book e;
+   
+		
+
+
+{
+	system("CLS");
+	cout<<"1.ADD NEW BOOK RECORDS"<<endl;
+	cout<<"2.DISPLAY ALL BOOK RECORDS"<<endl;
+
+	cout<<"3.DELETE BOOK RECORDS"<<endl;
+	cout<<"4.MODIFY BOOK RECORDS"<<endl;
+	cout<<"ENTER CHOICE"<<endl;
+	cin>>g;
+	if(g==2)
+	{
+	
+    	ifstream inFile;
+	inFile.open("account.dat",ios::out);
+	
+		 cout<<"\n----------------------------------------------";
+            cout<<"\n book        |    book id          | page     | publi    |  cop\n"<<endl;
+            cout<<"----------------------------------------------";
+		while(inFile.read(reinterpret_cast<char *> (&e), sizeof(book)))
+	{
+	
+		e.list();
+	}
+	inFile.close();
+}
+if(g==4)
+{
+	system("CLS");
+			bool found=false;
+	book e;
+	fstream File;
+    File.open("account.dat",ios::binary|ios::in|ios::out);
+    	cout<<"ENTER BOOK ID "<<endl;
+		cin>>n;
+	while(!File.eof() && found==false)
+	{
+		cout<<"ENTERTHE BOOK ID "<<endl;
+		cin>>n;
+		File.read(reinterpret_cast<char *> (&e), sizeof(book));
+		if(e.alpha()==n)
+		{
+			e.list();
+			cout<<"\n\n\t\t\tEnter The New Details of BOOK"<<endl;
+			e.modify_user();
+			int pos=(-1)*static_cast<int>(sizeof(book));
+			File.seekp(pos,ios::cur); //fncallat1353
+		    File.write(reinterpret_cast<char *> (&e), sizeof(book));
+		    cout<<"\n\n\t\t\tRecord Updated";
+		    found=true;
+		  }
+	}
+	File.close();
+	if(found==false)
+		cout<<"\n\n\t\t\tRecord Not Found ";
+}
+if(g==3)
+{
+	system("CLS");
+	cout<<"ENTER THE book id"<<endl;
+	cin>>n;
+	book e;
+	ifstream inFile;
+	ofstream outFile;
+	inFile.open("account.dat",ios::in);
+
+	outFile.open("Temp.dat",ios::binary);
+	inFile.seekg(0,ios::beg);
+	while(inFile.read(reinterpret_cast<char *> (&e), sizeof(book)))
+	{
+		if(e.alpha()!=n)
+		{
+			outFile.write(reinterpret_cast<char *> (&e), sizeof(book));
+		}
+	}
+    inFile.close();
+	outFile.close();
+	remove("account.dat");
+	rename("Temp.dat","account.dat");
+	cout<<"\n\nRecord Deleted ..";
+}
+
+	
+	if(g==1)
+	{
+     system("CLS");	
+		
+   e.addNew();
+   ofstream outFile;
+   	outFile.open("account.dat",ios::app);
+   		outFile.write(reinterpret_cast<char *> (&e), sizeof(book));
+	outFile.close();
+}
+
+cout<<"CONTINUE"<<endl;
+cin>>d;
+}
+}while(d<1);
+}
